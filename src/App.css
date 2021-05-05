@@ -79,11 +79,11 @@
     background: mediumblue;
 }
 
-.answer.wrong {
-    animation: wrong 3s ease forwards;
+.answer.correct {
+    animation: correct 3s ease forwards;
 }
 
-@keyframes wrong {
+@keyframes correct {
     0%,
     22%,
     42% {

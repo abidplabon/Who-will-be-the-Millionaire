@@ -1,4 +1,8 @@
 import {useEffect,useState} from 'react';
+
+
+
+
 export default function Trivia ({
     data,
     setTimeOut,
@@ -6,14 +10,37 @@ export default function Trivia ({
     setQuestionNumber
 }) {
     const [question,setQuestion]=useState(null);
+    const [selectedAnswer,setSelectedAnswer]=useState(null);
+    const [className,setClassName]=useState("answer");
+
+
+
+    useEffect(()=>{
+        setQuestion(data[questionNumber-1]);
+    },[data,questionNumber]);
+
+
+
+
+    const handleClick=(a)=>{
+        setSelectedAnswer(a);
+        setClassName("answer active");
+        setTimeout(()=>{
+            setClassName(a.correct? "answer correct":"answer wrong");
+        },3000);
+    };
+
+
+
+
+
     return ( 
         <div className="trivia" >
-            <div className="question">Which one is not the name of a browser </div>
+            <div className="question">{question?.question} </div>
             <div className="answers">
-                <div className="answer">Mozilla Firefox</div>
-                <div className="answer">Chrome</div>
-                <div className="answer">Opera</div>
-                <div className="answer">Siri</div>
+                {question?.answers.map((a)=>(
+                     <div className={selectedAnswer===a?className:"answer"} onClick={()=>handleClick(a)}>{a.text}</div>
+                ))}
             </div>
         </div>
     )
