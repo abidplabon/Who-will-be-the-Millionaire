@@ -1,60 +1,56 @@
-import {useEffect,useState} from 'react';
+import { useEffect, useState } from 'react';
 
 
 
 
-export default function Trivia ({
+export default function Trivia({
     data,
     setStop,
     questionNumber,
     setQuestionNumber
 }) {
-    const [question,setQuestion]=useState(null);
-    const [selectedAnswer,setSelectedAnswer]=useState(null);
-    const [className,setClassName]=useState("answer");
+    const [question, setQuestion] = useState(null);
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [className, setClassName] = useState("answer");
+
+    useEffect(() => {
+        setQuestion(data[questionNumber - 1]);
+    }, [data, questionNumber]);
 
 
-
-    useEffect(()=>{
-        setQuestion(data[questionNumber-1]);
-    },[data,questionNumber]);
-
-
-    const delay=(duration,callback)=>{
-        setTimeout(()=>{
+    const delay = (duration, callback) => {
+        setTimeout(() => {
             callback();
-        },duration);
+        }, duration);
     };
 
-    const handleClick=(a)=>{
+    const handleClick = (a) => {
         setSelectedAnswer(a);
         setClassName("answer active");
-        delay(3000,()=>
-        setClassName(a.correct? "answer correct":"answer wrong")
+        delay(3000, () =>
+            setClassName(a.correct ? "answer correct" : "answer wrong")
         );
-        delay(6000,()=>{
-            if(a.correct){
-                setQuestionNumber((prev)=>prev +1);
+        delay(6000, () => {
+            if (a.correct) {
+                setQuestionNumber((prev) => prev + 1);
                 setSelectedAnswer(null);
-            }else{
+            } else {
                 setStop(true);
             }
-        }
-        );
+        });
     };
-
-
-
-
-
-    return ( 
-        <div className="trivia" >
-            <div className="question">{question?.question} </div>
-            <div className="answers">
-                {question?.answers.map((a)=>(
-                     <div className={selectedAnswer===a?className:"answer"} onClick={()=>handleClick(a)}>{a.text}</div>
-                ))}
-            </div>
+    return ( <div className = "trivia">
+        <div className = "question">{question?.question}</div>  
+        <div className = "answers">{question?.answers.map((a) => ( 
+        <div 
+        className = { selectedAnswer === a ? className : "answer" }
+        onClick = {() => handleClick(a)} 
+        > 
+        { a.text } 
+        
         </div>
+            ))} 
+        </div> 
+    </div >
     )
 }
